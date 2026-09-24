@@ -1,5 +1,5 @@
 ---
-state: queued
+state: active
 ---
 
 # Audit the old M4 as a migration reference
