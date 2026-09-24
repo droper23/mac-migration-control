@@ -1,5 +1,6 @@
 #!/bin/bash
 set -euo pipefail
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/.local/bin"
 
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 ROLE="${1:?role required: m3 or m4}"
