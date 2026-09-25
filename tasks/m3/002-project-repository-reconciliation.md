@@ -1,5 +1,5 @@
 ---
-state: queued
+state: active
 ---
 
 # Reconcile M4 project repositories on M3
