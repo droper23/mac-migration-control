@@ -1,5 +1,5 @@
 ---
-state: queued
+state: active
 ---
 
 # Review optional M4 applications
