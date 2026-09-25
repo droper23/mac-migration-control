@@ -1,0 +1,9 @@
+Task complete. Summary:
+
+- **Checked** M3 for `Xcode-beta.app`, `NotchNook.app` (both confirmed absent via `ls`/`mdfind`) and Homebrew cask `sikarugir` (confirmed nonexistent under that name — `brew info`/`search` return no results, verified this isn't a tooling issue since other casks resolve fine).
+- **No installs or downloads performed**, per the task's explicit instruction to wait for confirmation.
+- **Report** written to `reports/m3/003-optional-reference-apps-report.md`.
+- **STATUS.md** updated with findings and the three open owner decisions.
+- **Task state** set to `needs-review` (owner must decide on each of the three items before any install proceeds).
+
+Not committing — that's the controller's job per your instructions.
