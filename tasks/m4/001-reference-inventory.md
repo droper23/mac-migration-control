@@ -1,5 +1,5 @@
 ---
-state: active
+state: completed
 ---
 
 # Audit the old M4 as a migration reference

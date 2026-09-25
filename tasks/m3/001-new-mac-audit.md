@@ -1,5 +1,5 @@
 ---
-state: queued
+state: completed
 ---
 
 # Make the new M3 Max ready as the daily driver
