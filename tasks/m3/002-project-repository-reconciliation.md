@@ -1,5 +1,5 @@
 ---
-state: active
+state: needs-review
 ---
 
 # Reconcile M4 project repositories on M3
