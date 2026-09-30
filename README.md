@@ -23,6 +23,47 @@ The account that runs the farm can stay a standard macOS account. It **cannot** 
 
 After this one-time handoff, all remaining commands in this guide run as the standard farm account without `sudo`.
 
+## Remote-first bootstrap
+
+Do this once at the M4 with an administrator present. Keep the M4 on power and connected to the home network.
+
+1. In **System Settings → General → Sharing**, turn on **Remote Login**. Click its information button and allow **only** the `FARM_USER` account.
+2. In the same Sharing page, turn on **Screen Sharing** (not Remote Management). Select **Only these users** and add `FARM_USER`. This is needed for Docker's first visual launch and any macOS dialog.
+3. In the farm account's Terminal, record the local hostname:
+
+   ```bash
+   scutil --get LocalHostName
+   ```
+
+From the M3, while both Macs are on the same network, replace the placeholders and connect:
+
+```bash
+ssh FARM_USER@M4_HOSTNAME.local
+```
+
+For visual control from the M3, open Screen Sharing:
+
+```bash
+open "vnc://M4_HOSTNAME.local"
+```
+
+Sign in with the M4 farm account. Apple Screen Sharing lets you limit access to only named users; do not enable it for all users or open it through a router.
+
+After the first password-based SSH connection, create a dedicated M3-to-M4 key on the M3:
+
+```bash
+ssh-keygen -t ed25519 -f ~/.ssh/m4-farm -C "m3-to-m4-farm"
+cat ~/.ssh/m4-farm.pub | ssh FARM_USER@M4_HOSTNAME.local 'umask 077; mkdir -p ~/.ssh; cat >> ~/.ssh/authorized_keys'
+```
+
+Subsequent terminal sessions use:
+
+```bash
+ssh -i ~/.ssh/m4-farm FARM_USER@M4_HOSTNAME.local
+```
+
+For away-from-home access, install and authorize Tailscale once on both Macs, then use the M4's private Tailscale hostname with the same SSH and Screen Sharing commands. Do not use router port forwarding for SSH, Screen Sharing, or the Clodfarm dashboard.
+
 ## 1. Bootstrap the M4
 
 Open Terminal and run these commands one block at a time.
