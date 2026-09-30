@@ -4,27 +4,32 @@ This is a clean-room setup for running [Clodfarm](https://github.com/matank001/c
 
 > **Important:** `bypassPermissions` permits an agent to execute arbitrary commands *inside its container*. Do not mount your home folder, a project folder, the Docker socket, cloud credentials, or personal SSH keys. Do not add Stripe, AWS, ad-platform, or browser logins until you deliberately accept that risk.
 
-The only interactive steps are accepting the Homebrew/Docker prompts and completing Claude's device login.
+The only interactive steps are a one-time administrator installation, accepting Docker's terms, and completing Claude's device login.
+
+## Account requirement
+
+The account that runs the farm can stay a standard macOS account. It **cannot** install Docker Desktop or grant itself the required macOS privileges. An administrator must perform the following one-time setup; there is no safe command-line workaround for a standard account to elevate itself.
+
+1. Download the Apple-silicon Docker Desktop installer from [Docker](https://www.docker.com/products/docker-desktop/), drag `Docker.app` into `/Applications`, and identify the standard account's short name.
+2. In an administrator Terminal, replace `FARM_USER` and run:
+
+   ```bash
+   sudo /Applications/Docker.app/Contents/MacOS/install --user=FARM_USER
+   ```
+
+   This configures Docker Desktop for that one standard account. It does **not** make the account an administrator.
+3. Install the Xcode Command Line Tools if `git --version` asks for them. This may also require an administrator approval dialog.
+4. Download Ollama, drag it to the farm account's `~/Applications` folder, and do not sign it into any cloud account.
+
+After this one-time handoff, all remaining commands in this guide run as the standard farm account without `sudo`.
 
 ## 1. Bootstrap the M4
 
 Open Terminal and run these commands one block at a time.
 
 ```bash
-xcode-select --install
-```
-
-When the macOS installer finishes:
-
-```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
-
-```bash
-echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
-eval "$(/opt/homebrew/bin/brew shellenv)"
-brew install git gh
-brew install --cask docker ollama
+git --version
+mkdir -p ~/Applications
 ```
 
 Launch Docker Desktop:
@@ -42,7 +47,7 @@ docker version
 Start Ollama and wait for its local API:
 
 ```bash
-open -a Ollama
+open ~/Applications/Ollama.app
 until curl -fsS http://127.0.0.1:11434/api/tags >/dev/null; do sleep 2; done
 ```
 
