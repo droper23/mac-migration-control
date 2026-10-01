@@ -137,13 +137,21 @@ docker compose up -d
 docker compose logs --tail=100
 ```
 
-Sign Clodfarm into the Claude subscription:
+Sign Clodfarm into the Claude subscription with a **full interactive login**:
 
 ```bash
 docker compose exec -it clodfarm clodfarm login
 ```
 
-Follow the printed URL and device-code prompt. Once completed, make the farm private and prevent anyone else from hatching an agent:
+Follow the printed URL and device-code prompt. Do not configure `CLAUDE_CODE_OAUTH_TOKEN` when `FARM_REMOTE_CONTROL=1`: long-lived tokens are inference-only and cannot power Remote Control. If a token was already added, delete its `CLAUDE_CODE_OAUTH_TOKEN=...` line from `.env`, then run:
+
+```bash
+docker compose up -d --force-recreate
+docker compose exec -it clodfarm claude auth login
+docker compose restart
+```
+
+Once completed, make the farm private and prevent anyone else from hatching an agent:
 
 ```bash
 docker compose exec clodfarm clodfarm farm private
